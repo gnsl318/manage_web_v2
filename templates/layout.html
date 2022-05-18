@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block content1 %}
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href=".">
+        <img class="class=img-profile"
+            src="../static/img/logo.svg" width="50" height="55">
+        <div class="sidebar-brand-text mx-3">Seoreu</div>
+    </a>
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+    <!-- Heading -->
+    {% for l_class,m_dic in category.items() %}
+    <div class="sidebar-heading">
+        {{ l_class }}
+    </div>
+    {% for m_class,s_class_list in m_dic.items() %}
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{{m_class}}"
+            aria-expanded="true" aria-controls="collapse{{m_class}}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>{{ m_class }}</span>
+        </a>
+        <div id="collapse{{m_class}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Sub</h6>
+                {% for s_class in s_class_list %}
+                <a class="collapse-item" href="./{{s_class}}">{{ s_class }}</a>
+                {% endfor %}
+                <!-- <a class="collapse-item" href="cards.html">Catheter</a> -->
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+    {% endfor %}
+</ul>
+<!-- End of Sidebar -->
+
+{% endblock %}

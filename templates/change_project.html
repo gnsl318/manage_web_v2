@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Seoreu</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primaryy">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <a class="sidebar-brand d-flex align-items-center justify-content-between" href="/">
+                            
+                            <img class="class=img-profile " src="../static/img/house.png" width="50" height="50">
+                        </a>
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            {%if state %}
+                            <img class="class=img-profile " 
+                                src="../static/img/soo.png" width="465" height="1000">
+                            {% else %}
+                            <img class="class=img-profile " 
+                                src="../static/img/soo.png" width="465" height="600">
+                            {% endif %}
+                            <div class="col-lg-6">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Change Project Info</h1>
+                                    </div>
+                                    <style>
+                                        select {
+                                            width: 100%;
+                                            height: calc(1.5em + 0.75rem + 2px);
+                                            padding: 0.375rem 0.75rem;
+                                            font-size: 1rem;
+                                            font-weight: 400;
+                                            line-height: 1.5;
+                                            color: #6e707e;
+                                            background-color: #fff;
+                                            background-clip: padding-box;
+                                            border: 1px solid #d1d3e2;
+                                            border-radius: 0.35rem;
+                                            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                                        }
+                                    </style>
+                                    <form class="search_part" action = "/main/change_part_search" method = "post">
+                                        <div class="form-group">
+                                            Part_name :
+                                            <select name="l_class">
+                                                {% for l_class in part_l_class %}
+                                                <option value= {{ l_class }} >{{ l_class }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <hr>  
+                                            <select name="m_class">
+                                                {% for m_class in part_m_class %}
+                                                <option value= {{ m_class }} >{{ m_class }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <hr>  
+                                            <select name="s_class">
+                                                {% for s_class in part_s_class %}
+                                                <option value= {{ s_class }} >{{ s_class }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <hr>  
+                                            <input type="submit" value="조회"/>
+                                        </div>
+                                    </form>
+                                    {% if state ==True or state == False %}
+                                    <form class="user" action = "/main/change_part_do" method = "post">
+                                        <div class="form-group">
+                                            대분류 : {{ l_class }}
+                                            <input type="text" class="form-control form-control-user"
+                                                id="l_class" name="l_class" value = {{l_class}} placeholder="대분류">
+                                                <!-- <readonly> -->
+                                        </div>
+                                        <div class="form-group">
+                                            중분류 : {{ m_class }}
+                                            <input type="text" class="form-control form-control-user"
+                                                id="m_class" name="m_class" value={{m_class}} placeholder="중분류">
+                                        </div>
+                                        <div class="form-group">
+                                            소분류 : {{ s_class }}
+                                             <input type="text" class="form-control form-control-user"
+                                                id="s_class" name="s_class" value={{s_class}} placeholder="소분류">
+                                        </div>
+                                        <div class="form-group">
+                                            목표 수량 : {{ max_count }}
+                                             <input type="number" class="form-control form-control-user"
+                                                id="max_count" name="max_count" value={{max_count}} placeholder="목표수량">
+                                        </div>
+                                        <div class="form-group">
+                                            시작 날짜 : {{ start_date }}
+                                            <input type="date" class="form-control form-control-user"
+                                                id="start_date" name="start_date" value="{{ start_date }}" placeholder="Start_date">
+                                        </div>
+                                        <div class="form-group">
+                                            종료 날짜 : {{ end_date }}
+                                            <input type="date" class="form-control form-control-user"
+                                                id="end_date" name="end_date" value="{{ end_date }}" placeholder="End_date">
+                                        </div>
+                                        <div class="form-group">
+                                            State : {{ state }}
+                                            <select name="state">
+                                                <option value="None" selected>==Select==</option>
+                                                <option value="True">진행</option>
+                                                <option value="False">종료</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            State : {{ check_state }}
+                                            <select name="check_state">
+                                                <option value="None" selected>==Select==</option>
+                                                <option value="True">진행</option>
+                                                <option value="False">종료</option>
+                                            </select>
+                                        </div>
+                                        <div></div>
+                                        <input type="submit" value="변경" class="btn btn-primary btn-user btn-block"/>
+                                    </form>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../static/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
