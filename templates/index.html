@@ -40,29 +40,25 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Heading -->
-            {% for l_class,m_dic in category.items() %}
-            <div class="sidebar-heading">
-            {{ l_class }}
-            </div>
-            {% for m_class,s_class_list in m_dic.items() %}
+            {% for part_name,v in part.items() %}
+            <!-- <div class="sidebar-heading">
+            </div> -->
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{{l_class}}{{m_class}}"
-                    aria-expanded="true" aria-controls="collapse{{l_class}}{{m_class}}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{{part_name}}"
+                    aria-expanded="true" aria-controls="collapse{{part_name}}">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>{{ m_class }}</span>
+                    <span>{{ part_name }}</span>
                 </a>
-                <div id="collapse{{l_class}}{{m_class}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapse{{part_name}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Sub</h6>
-                        {% for s_class in s_class_list %}
-                        <a class="collapse-item" href="./{{l_class}}-{{m_class}}-{{s_class}}">{{ s_class }}</a>
-                        {% endfor %}
+                        <a class="collapse-item" href="./{{part_name}}-{{v}}">{{ v }}</a>
                         <!-- <a class="collapse-item" href="cards.html">Catheter</a> -->
                     </div>
                 </div>
             </li>
-            {% endfor %}
+
             {% endfor %}
         </ul>
         <!-- End of Sidebar -->

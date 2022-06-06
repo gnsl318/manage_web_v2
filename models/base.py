@@ -4,9 +4,10 @@ from sqlalchemy.orm import relationship
 import datetime
 import sys
 import os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from db.session import Base,engine
 
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
 
 class User(Base):
   __tablename__ = 'users'
@@ -56,17 +57,6 @@ class Logs(Base):
   file_name = Column(String(3000))
   info = Column(String(3000))
 
-class Check_Logs(Base):
-  __tablename__ = "check_log"
-  id = Column(Integer, primary_key = True, autoincrement=True,index=True)
-  part_id = Column(Integer,ForeignKey("part.id"))
-  part = relationship("Part")
-  user_id = Column(Integer,ForeignKey("users.id"))
-  user =  relationship("User")
-  work_day = Column(Date)
-  file_name = Column(String(3000))
-  info = Column(String(3000))
-
 class Test_log(Base):
   __tablename__ = "test_log"
   id = Column(Integer, primary_key = True, autoincrement=True,index=True)
@@ -99,19 +89,7 @@ class Error(Base):
   clear_user = relationship("User",foreign_keys=[clear_user_id])
 
 
-class Check_Error(Base):
-  __tablename__= 'check_error'
-  id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-  user_id = Column(Integer,ForeignKey("users.id"))
-  user =  relationship("User",foreign_keys=[user_id])
-  part_id = Column(Integer,ForeignKey("part.id"))
-  part = relationship("Part")
-  file_name = Column(String(3000))
-  error_id =Column(Integer,ForeignKey("error_list.id"))
-  error = relationship("Error_list")
-  error_day = Column(Date)
-  clear_day = Column(Date)
-  clear_user_id = Column(Integer,ForeignKey("users.id"))
-  clear_user = relationship("User",foreign_keys=[clear_user_id])
+#Test_log.__table__.create(bind=engine)
+
 
 
