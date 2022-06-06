@@ -1,0 +1,22 @@
+anyio @ file:///Users/runner/miniforge3/conda-bld/anyio_1652463928486/work/dist
+asgiref @ file:///tmp/build/80754af9/asgiref_1625643473416/work
+certifi==2022.5.18.1
+click @ file:///opt/concourse/worker/volumes/live/17ca243b-fc66-462b-4bc1-f11ad524e336/volume/click_1646056621177/work
+fastapi @ file:///home/conda/feedstock_root/build_artifacts/fastapi_1652577626630/work
+greenlet @ file:///opt/concourse/worker/volumes/live/b27b4e9e-4697-4d57-403b-f82d36a391ca/volume/greenlet_1628888146890/work
+h11 @ file:///tmp/build/80754af9/h11_1620423447028/work
+idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1642433548627/work
+itsdangerous @ file:///tmp/build/80754af9/itsdangerous_1621432558163/work
+Jinja2 @ file:///opt/conda/conda-bld/jinja2_1647436528585/work
+MarkupSafe @ file:///opt/concourse/worker/volumes/live/1bcf0940-5bf8-4171-61e3-2133f5885e8b/volume/markupsafe_1621528148241/work
+psycopg2 @ file:///opt/concourse/worker/volumes/live/7541fe58-2a45-4073-5d69-313e733fc729/volume/psycopg2_1612298592535/work
+pydantic @ file:///Users/runner/miniforge3/conda-bld/pydantic_1649126028915/work
+python-dotenv @ file:///home/conda/feedstock_root/build_artifacts/python-dotenv_1648162816482/work
+python-multipart==0.0.5
+six==1.16.0
+sniffio @ file:///Users/runner/miniforge3/conda-bld/sniffio_1648819227435/work
+SQLAlchemy @ file:///opt/concourse/worker/volumes/live/bfe20d71-b806-4187-4783-cd5d96eb1af2/volume/sqlalchemy_1647599831148/work
+starlette @ file:///home/conda/feedstock_root/build_artifacts/starlette-recipe_1650649298613/work
+typing_extensions @ file:///opt/conda/conda-bld/typing_extensions_1647553014482/work
+uvicorn @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/croot-5huqwf0h/uvicorn_1641600733036/work
+XlsxWriter @ file:///opt/conda/conda-bld/xlsxwriter_1649073856329/work
