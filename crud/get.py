@@ -50,3 +50,55 @@ def true_user(
         return True
     else:
         return False
+
+def log_name(
+    *,
+    db:Session,
+    part_id:int,
+    name:str,
+):
+    name_id = db.query(User).filter(User.name==name).first().id
+    log_info=db.query(Logs).filter(and_(Logs.part_id == part_id,Logs.user_id == name_id)).all()
+    return log_info
+
+def log_name_date(
+    *,
+    db:Session,
+    part_id:int,
+    name:str,
+    start_date:str,
+    end_date:str
+):
+    if start_date is None:
+        start_date = datetime.datetime.strptime(f"{date.today().year}0101","%Y%m%d")
+    if end_date is None:
+        end_date = datetime.datetime.strptime(f"{int(date.today().year)+1}1231","%Y%m%d")
+    if name is None:
+        log_info=db.query(Logs).filter(and_((Logs.part_id == part_id),(Logs.work_day>=start_date),(Logs.work_day<=end_date))).all()
+    else:
+        name_id = db.query(User).filter(User.name==name).first().id
+        log_info=db.query(Logs).filter(and_((Logs.part_id == part_id),(Logs.user_id == name_id),(Logs.work_day>=start_date),(Logs.work_day<=end_date))).all()
+    return log_info
+
+def error_name_date(
+    *,
+    db:Session,
+    part_id:int,
+    name:str,
+    start_date:date,
+    end_date:date
+):
+    if start_date is None:
+        start_date = datetime.datetime.strptime(f"{date.today().year}0101","%Y%m%d")
+    if end_date is None:
+        end_date = datetime.datetime.strptime(f"{int(date.today().year)+1}1231","%Y%m%d")
+    if name is None:
+        error_info=db.query(Error).filter(and_(Error.part_id == part_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
+    else:
+        name_id = db.query(User).filter(User.name==name).first().id
+        error_info=db.query(Error).filter(and_(Error.part_id == part_id,Error.user_id == name_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
+    error_dic={}
+    if error_info:
+        for i,error in enumerate(error_info):
+            error_dic[i] = [error.id,error.user.name,error.file_name,error.error.error,error.error_day]
+    return error_dic

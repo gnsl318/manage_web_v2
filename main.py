@@ -9,7 +9,8 @@ from db.session import *
 import smtplib
 from crud import create,get,update
 from func import *
-import datetime
+from datetime import date
+from typing import Optional
 
 Base.metadata.create_all(bind=engine)
 
@@ -31,22 +32,24 @@ app.mount("/static",StaticFiles(directory="static"),name="static")
 @app.get("/favicon.ico")
 async def favicon():
 	return FileResponse(os.path.join(os.getcwd(),"static/img/logo.ico"))
-
-
+part_dic = get.all_part(db=db_session)
+part_list = {}
+for part_name,part_info in part_dic.items():
+    part_list[part_name]=part_name.split("-")[-1]
+f"{part_name.split('-')[6]}-{part_name.split('-')[7]}-{part_name.split('-')[8]}"
 @app.get("/")
 async def home(request:Request):
-    part_dic = get.all_part(db=db_session)
-    part_list = {}
     data = {}
     mean = {}
     count = {}
     for part_name,part_info in part_dic.items():
-        part_list[f"{part_name.split('-')[6]}-{part_name.split('-')[7]}-{part_name.split('-')[8]}"]=part_name.split("-")[-1]
         log_info = get.log_part(db=db_session,part_id = part_info[0])
         day_work={}
         total_count = 0
         worker=[]
         for log in log_info:
+            if log.info == json.dumps("raw_file"):
+                continue
             worker.append(log.user_id)
             try:
                 day_work[log.work_day] +=1
@@ -59,7 +62,7 @@ async def home(request:Request):
         total_count=sum(day_work.values())
         data[part_name]= int((total_count/part_info[1])*100)
         count[part_name]=f"{total_count}/{part_info[1]}"
-    return templates.TemplateResponse('index.html',{'request':request,'data':data,'count':count,'part':part_list,'bar_data':mean})
+    return templates.TemplateResponse('index.html',{'request':request,'data':data,'count':count,'part_list':part_list,'bar_data':mean})
 
 @app.get("/main/login")
 async def login_page(request:Request):
@@ -132,12 +135,34 @@ def dwonload_file(request:Request,part:str):
         make_df(part_dict = part_dict,ws=ws)
     else:
         file_name=f"{part}_log"
-        l_class = part.split("-")[0]
-        m_class = part.split("-")[1]
-        s_class = part.split("-")[-1]
         workbook = xlsxwriter.Workbook(f"{os.getcwd()}/file/{file_name}.xlsx")
-        ws = workbook.add_worksheet(f"{l_class}-{m_class}-{s_class}")
-        make_df(db=db_session,l_class=l_class,m_class=m_class,s_class=s_class,ws=ws)
+        ws = workbook.add_worksheet(f"{part}")
+        make_df(db=db_session,part_dict=part_dict,ws=ws)
     workbook.close()
     file_path=os.path.join(os.getcwd(),f"file/{file_name}.xlsx")
     return FileResponse(path=file_path,media_type='application/octet-stream',filename=f"{file_name}_{datetime.datetime.now().strftime('%Y/%m/%d %H:%M')}.xlsx")
+@app.get("/{part}")
+async def part(request:Request,part:str):
+    label,work = label_work(part_id=part_dic[part][0],name=None,start_date=None,end_date=None)
+    error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=None,start_date=None,end_date=None)
+    page_file = f"total_charts.html"
+    request.session['part']=part
+    return templates.TemplateResponse(page_file,{'request':request,'part':part,'part_list':part_list,'bar_data':label,'work':work,'error':error_info})
+
+@app.get('/{part}/search')
+async def serch(request:Request,part:str):
+	return RedirectResponse(url=f"/{part}", status_code=302)
+@app.post("/{part}/search")
+async def search(request:Request,part:str,search_name: str = Form(None),start_date:Optional[date]=Form(None),end_date:Optional[date]=Form(None)):
+    if search_name!=None:
+        if get.name(db=db_session,name=search_name):	
+            label,work = label_work(part_id=part_dic[part][0],name=search_name,start_date=start_date,end_date=end_date)
+            error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=search_name,start_date=start_date,end_date=end_date)
+            return templates.TemplateResponse('/search_charts.html',{'request':request,'part_list':part_list,'name':search_name,'bar_data':label,'work':work,'error':error_info})
+        else:
+            return RedirectResponse(url=f"/{part}", status_code=302)
+    else:
+        search_name ="all"
+        label,work = label_work(part_id=part_dic[part][0],name=search_name,start_date=start_date,end_date=end_date)
+        error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=search_name,start_date=start_date,end_date=end_date)
+        return templates.TemplateResponse('/search_charts.html',{'request':request,'part_list':part_list,'name':search_name,'bar_data':label,'work':work,'error':error_info})

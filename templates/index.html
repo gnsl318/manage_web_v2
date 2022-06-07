@@ -40,7 +40,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Heading -->
-            {% for part_name,v in part.items() %}
+            {% for part_name,v in part_list.items() %}
             <!-- <div class="sidebar-heading">
             </div> -->
             <!-- Nav Item - Dashboard -->
@@ -48,12 +48,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{{part_name}}"
                     aria-expanded="true" aria-controls="collapse{{part_name}}">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>{{ part_name }}</span>
+                    <span>{{ part_name.split('-')[6] }}-{{ part_name.split('-')[7] }}-{{ part_name.split('-')[8] }}</span>
                 </a>
                 <div id="collapse{{part_name}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Sub</h6>
-                        <a class="collapse-item" href="./{{part_name}}-{{v}}">{{ v }}</a>
+                        <a class="collapse-item" href="./{{part_name}}">{{ v }}</a>
                         <!-- <a class="collapse-item" href="cards.html">Catheter</a> -->
                     </div>
                 </div>
@@ -361,7 +361,7 @@
                     <div class="form-group">
                         거래처
                         <input type="text" class="form-control form-control-user"
-                            id="l_class" name="l_class" placeholder="거래처">
+                            id="p_01" name="p_01" placeholder="거래처">
                     </div>
                     <div class="form-group">
                         Part
