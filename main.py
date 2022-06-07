@@ -136,7 +136,7 @@ def dwonload_file(request:Request,part:str):
     else:
         file_name=f"{part}_log"
         workbook = xlsxwriter.Workbook(f"{os.getcwd()}/file/{file_name}.xlsx")
-        ws = workbook.add_worksheet(f"{part}")
+        ws = workbook.add_worksheet(f"Log")
         make_df(db=db_session,part_dict=part_dict,ws=ws)
     workbook.close()
     file_path=os.path.join(os.getcwd(),f"file/{file_name}.xlsx")
