@@ -10,6 +10,7 @@ import smtplib
 from crud import create,get,update
 from func import *
 from datetime import date
+import datetime
 from typing import Optional
 
 Base.metadata.create_all(bind=engine)
@@ -36,7 +37,6 @@ part_dic = get.all_part(db=db_session)
 part_list = {}
 for part_name,part_info in part_dic.items():
     part_list[part_name]=part_name.split("-")[-1]
-f"{part_name.split('-')[6]}-{part_name.split('-')[7]}-{part_name.split('-')[8]}"
 @app.get("/")
 async def home(request:Request):
     data = {}
@@ -130,17 +130,19 @@ def dwonload_file(request:Request,part:str):
     if part == "all":
         file_name=f"all_log"
         workbook = xlsxwriter.Workbook(f"{os.getcwd()}/file/{file_name}.xlsx")
-        part_dict=get.all_part(db=db_session)
         ws = workbook.add_worksheet("All_log")
-        make_df(part_dict = part_dict,ws=ws)
+        make_df(part_dict = part_dic,ws=ws)
     else:
         file_name=f"{part}_log"
         workbook = xlsxwriter.Workbook(f"{os.getcwd()}/file/{file_name}.xlsx")
         ws = workbook.add_worksheet(f"Log")
-        make_df(db=db_session,part_dict=part_dict,ws=ws)
+        i = list(part_dic.keys()).index(part)
+        part_info = {list(part_dic)[i]:list(part_dic.values())[i]}
+        make_df(part_dict=part_info,ws=ws)
     workbook.close()
     file_path=os.path.join(os.getcwd(),f"file/{file_name}.xlsx")
     return FileResponse(path=file_path,media_type='application/octet-stream',filename=f"{file_name}_{datetime.datetime.now().strftime('%Y/%m/%d %H:%M')}.xlsx")
+
 @app.get("/{part}")
 async def part(request:Request,part:str):
     label,work = label_work(part_id=part_dic[part][0],name=None,start_date=None,end_date=None)
