@@ -146,7 +146,7 @@ def dwonload_file(request:Request,part:str):
 @app.get("/{part}")
 async def part(request:Request,part:str):
     label,work = label_work(part_id=part_dic[part][0],name=None,start_date=None,end_date=None)
-    error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=None,start_date=None,end_date=None)
+    error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=None,start_date=None,end_date=None,part_name=part)
     page_file = f"total_charts.html"
     request.session['part']=part
     return templates.TemplateResponse(page_file,{'request':request,'part':part,'part_list':part_list,'bar_data':label,'work':work,'error':error_info})
@@ -159,12 +159,32 @@ async def search(request:Request,part:str,search_name: str = Form(None),start_da
     if search_name!=None:
         if get.true_user(db=db_session,name=search_name):	
             label,work = label_work(part_id=part_dic[part][0],name=search_name,start_date=start_date,end_date=end_date)
-            error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=search_name,start_date=start_date,end_date=end_date)
+            error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=search_name,start_date=start_date,end_date=end_date,part_name=part)
             return templates.TemplateResponse('/search_charts.html',{'request':request,'part':part,'part_list':part_list,'name':search_name,'bar_data':label,'work':work,'error':error_info})
         else:
             return RedirectResponse(url=f"/{part}", status_code=302)
     else:
         search_name ="all"
         label,work = label_work(part_id=part_dic[part][0],name=None,start_date=start_date,end_date=end_date)
-        error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=None,start_date=start_date,end_date=end_date)
+        error_info = get.error_name_date(db=db_session,part_id=part_dic[part][0],name=None,start_date=start_date,end_date=end_date,part_name=part)
+        
         return templates.TemplateResponse('/search_charts.html',{'request':request,'part':part,'part_list':part_list,'name':search_name,'bar_data':label,'work':work,'error':error_info})
+
+@app.post("/main/check_error")
+async def change_error(request:Request):
+    error_data = await request.form()
+    try:
+        for key,error_id in error_data.items():
+            if key != "dataTable_length":
+                try:
+                    url=f"/{request.session['part']}"
+                    update.error_info(db=db_session,error_id=error_id,clear_user=request.session["name"])
+                except Exception as e:
+                    print(e)
+                    pass
+            else:
+                pass
+        return RedirectResponse(url, status_code=302)
+    except Exception as e:
+        print(e)
+        return RedirectResponse(url=f"/{request.session['part']}", status_code=302)

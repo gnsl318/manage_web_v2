@@ -86,7 +86,8 @@ def error_name_date(
     part_id:int,
     name:str,
     start_date:date,
-    end_date:date
+    end_date:date,
+    part_name:str
 ):
     if start_date is None:
         start_date = datetime.datetime.strptime(f"{date.today().year}0101","%Y%m%d")
@@ -100,5 +101,5 @@ def error_name_date(
     error_dic={}
     if error_info:
         for i,error in enumerate(error_info):
-            error_dic[i] = [error.id,error.user.name,error.file_name,error.error.error,error.error_day]
+            error_dic[i] = [error.id,error.user.name,part_name,error.file_name,error.error.error,error.error_day]
     return error_dic
