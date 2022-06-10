@@ -47,6 +47,7 @@ async def home(request:Request):
         day_work={}
         total_count = 0
         worker=[]
+        day_worker={}
         for log in log_info:
             if log.info == json.dumps("raw_file"):
                 continue
@@ -55,10 +56,17 @@ async def home(request:Request):
                 day_work[log.work_day] +=1
             except:
                 day_work[log.work_day] =1
+            try:
+                day_worker[log.work_day].append(log.user_id)
+            except:
+                day_worker[log.work_day]=[]
+        total_worker=0
+        for k,v in day_worker.items():
+            total_worker += len(set(v))
         if len(day_work) != 0:
-            mean[part_name]=[len(set(worker)),int(sum(day_work.values())/len(day_work.keys())),int(sum(day_work.values())/len(set(worker)))]
+            mean[part_name]=[len(day_work.keys()),total_worker,total_worker/len(day_work.keys()),sum(day_work.values())/len(day_work.keys()),sum(day_work.values())/len(set(worker))]
         else:
-            mean[part_name]=[0,0,0]
+            mean[part_name]=[0,0,0,0,0]
         total_count=sum(day_work.values())
         data[part_name]= int((total_count/part_info[1])*100)
         count[part_name]=f"{total_count}/{part_info[1]}"
