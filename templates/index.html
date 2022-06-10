@@ -201,24 +201,27 @@
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>파트</th>
-                                                <th>작업인원</th>
-                                                <th>1일 평균 작업량</th>
+                                                <th>프로젝트명</th>
+                                                <th>총 참여 인원</th>
+                                                <th>프로젝트 1일 평균 가공량(전체 가공량/전체 작업일수)</th>
+                                                <th>1인 1일 평균 가공량(전체 가공량/총 참여인원)</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>파트</th>
-                                                <th>작업인원</th>
-                                                <th>1일 평균 작업량</th>
+                                                <th>프로젝트명</th>
+                                                <th>총 참여 인원</th>
+                                                <th>프로젝트 1일 평균 가공량(전체 가공량/전체 작업일수)</th>
+                                                <th>1인 1일 평균 가공량(전체 가공량/총 참여인원)</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
                                             {% for part,value in bar_data.items() %}
                                             <tr>
                                                 <td>{{part}}</td>
-                                                <td>{{value.split(":")[1]}}</td>
-                                                <td>{{value.split(":")[0]}}</td>
+                                                <td>{{value[0]}}</td>
+                                                <td>{{value[1]}}</td>
+                                                <td>{{value[2]}}</td>
                                             </tr>           
                                             {% endfor %}
                                         </tbody>

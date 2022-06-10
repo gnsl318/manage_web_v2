@@ -56,9 +56,9 @@ async def home(request:Request):
             except:
                 day_work[log.work_day] =1
         if len(day_work) != 0:
-            mean[part_name]=f"{str(int(sum(day_work.values())/len(day_work.keys())))}:{len(set(worker))}"
+            mean[part_name]=[len(set(worker)),int(sum(day_work.values())/len(day_work.keys())),int(sum(day_work.values())/len(set(worker)))]
         else:
-            mean[part_name]=f"{str(0)}:0"
+            mean[part_name]=[0,0,0]
         total_count=sum(day_work.values())
         data[part_name]= int((total_count/part_info[1])*100)
         count[part_name]=f"{total_count}/{part_info[1]}"
