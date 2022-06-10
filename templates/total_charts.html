@@ -176,6 +176,23 @@
                                     </canvas>
                                 </div>
                                 <hr>
+                                <!-- DataTales Example -->
+                                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>작업날짜</th>
+                                            <th>작업수량</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for day,count in j_work.items() %}
+                                        <tr>
+                                            <th>{{day}}</th>
+                                            <td>{{count}}</td>
+                                        </tr>          
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -189,6 +206,23 @@
                                     <canvas id="bar_chart", data-data="{{ bar_data }}"></canvas>
                                 </div>
                                 <hr>
+                                <!-- DataTales Example -->
+                                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>작업날짜</th>
+                                            <th>작업수량</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for class,count in j_label.items() %}
+                                        <tr>
+                                            <th>{{class}}</th>
+                                            <td>{{count}}</td>
+                                        </tr>          
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -408,7 +442,7 @@
     <script src="../static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../static/js/demo/datatables-demo.js"></script>
+    <script src="../static/js/demo/datatables-demo.js?ver=1"></script>
 
 </body>
 
