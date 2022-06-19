@@ -94,10 +94,10 @@ def error_name_date(
     if end_date is None:
         end_date = datetime.datetime.strptime(f"{int(date.today().year)+1}1231","%Y%m%d")
     if name is None:
-        error_info=db.query(Error).filter(and_(Error.part_id == part_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
+        error_info=db.query(Error).filter(and_(Error.clear_day == None,Error.part_id == part_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
     else:
         name_id = db.query(User).filter(User.name==name).first().id
-        error_info=db.query(Error).filter(and_(Error.part_id == part_id,Error.user_id == name_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
+        error_info=db.query(Error).filter(and_(Error.clear_day == None,Error.part_id == part_id,Error.user_id == name_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
     error_dic={}
     if error_info:
         for i,error in enumerate(error_info):
