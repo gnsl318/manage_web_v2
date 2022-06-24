@@ -97,7 +97,7 @@ def error_name_date(
         error_info=db.query(Error).filter(and_(Error.clear_day == None,Error.part_id == part_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
     else:
         name_id = db.query(User).filter(User.name==name).first().id
-        error_info=db.query(Error).filter(and_(Error.clear_day == None,Error.part_id == part_id,Error.user_id == name_id,Error.error_day>=start_date,Error.error_day<=end_date)).all()
+        error_info=db.query(Error).filter(and_(Error.clear_day == None,Error.part_id == part_id,Error.user_id == name_id,Error.error_day>=start_date,Error.error_day<=end_date,Error.clear_day != null)).all()
     error_dic={}
     if error_info:
         for i,error in enumerate(error_info):
